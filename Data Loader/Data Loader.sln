@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader", "Uploader\Uploader.csproj", "{3F37A0FA-7631-43E8-815E-DB3C2513CF49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data Loader", "Uploader\Data Loader.csproj", "{3F37A0FA-7631-43E8-815E-DB3C2513CF49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{33E302DD-7302-4999-8C24-C8D73AA4827A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "..\Database\Database.csproj", "{33E302DD-7302-4999-8C24-C8D73AA4827A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

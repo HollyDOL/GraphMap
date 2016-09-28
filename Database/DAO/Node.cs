@@ -9,6 +9,6 @@ namespace Database.DAO
         public int Id { get; set; }
         [Required, MaxLength(128)]
         public string Label { get; set; }
-        public virtual List<AdjacentNode> AdjacentNodes { get; set; }
+        public virtual ICollection<Node> AdjacentNodes { get; set; }
     }
 }
