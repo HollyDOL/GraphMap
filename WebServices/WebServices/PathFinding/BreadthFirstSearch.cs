@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Database;
 using Database.DAO;
 
 namespace WebServices.PathFinding
@@ -27,14 +26,11 @@ namespace WebServices.PathFinding
                 result.Add(wn);
             }
 
-            using (GraphContext context = new GraphContext())
+            foreach (Node n in Context.Nodes.Where(n => n.AdjacentNodes.Any(n2 => n2.Id == root.Node.Id)))
             {
-                foreach (Node n in context.Nodes.Where(n => n.AdjacentNodes.Contains(root.Node)))
-                {
-                    if (_alreadyVisited.Contains(n)) continue;
-                    WorkNode wn = new WorkNode(root, n);
-                    result.Add(wn);
-                }
+                if (_alreadyVisited.Contains(n)) continue;
+                WorkNode wn = new WorkNode(root, n);
+                result.Add(wn);
             }
             return result;
         }
@@ -56,13 +52,14 @@ namespace WebServices.PathFinding
             while (visits.Any())
             {
                 current = visits.Dequeue();
+                if (_alreadyVisited.Contains(current.Node)) continue;
                 _alreadyVisited.Add(current.Node);
                 if (current.Node == destination)
                 {
                     found = true;
                     break;
                 }
-                if (_alreadyVisited.Contains(current.Node)) continue;
+
 
                 foreach (WorkNode wrk in ExpandNode(current))
                     visits.Enqueue(wrk);
@@ -78,6 +75,7 @@ namespace WebServices.PathFinding
             }
 
             _way = new List<int>(st);
+            Context.Dispose();
             return _way;
         }
     }
