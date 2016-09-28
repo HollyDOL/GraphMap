@@ -15,6 +15,7 @@ namespace Database
                 m.MapRightKey("destinationID");
                 m.ToTable("Node_to_Node");
             });
+            
         }
     }
 }

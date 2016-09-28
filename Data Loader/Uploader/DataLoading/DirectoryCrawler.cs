@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace DataLoader.DataProcessing
+namespace DataLoader.DataLoading
 {
     internal static class DirectoryCrawler
     {

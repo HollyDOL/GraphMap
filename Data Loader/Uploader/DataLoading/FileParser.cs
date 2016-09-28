@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using NLog;
 
-namespace DataLoader.DataProcessing
+namespace DataLoader.DataLoading
 {
     internal static class FileParser
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         internal static IEnumerable<FileNode> LoadNodes(IEnumerable<FileInfo> files, bool asParallel = true)
         {
             return asParallel ? LoadParalel(files) : LoadSerial(files);
@@ -20,9 +23,9 @@ namespace DataLoader.DataProcessing
             foreach (FileInfo info in files)
             {
                 FileNode node = LoadFile(info);
-                if (node!=null) result.Add(node);
+                if (node != null) result.Add(node);
             }
-                
+
             return result;
         }
 
@@ -48,7 +51,7 @@ namespace DataLoader.DataProcessing
             }
             catch (Exception ex)
             {
-                //TOOD: log it
+                Logger.Error(ex, $"Unable to process file {fi.Name}");
             }
             finally
             {

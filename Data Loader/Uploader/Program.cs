@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using DataLoader.DataProcessing;
+using Database;
+using Database.DAO;
+using DataLoader.DataLoading;
+using DataLoader.DataSynchronization;
+using NLog;
 
 namespace DataLoader
 {
     class Program
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         static void Main(string[] args)
         {
+            Logger.Info("Data Loader starting");
             if (args.Length != 1)
             {
                 PrintHelp();
@@ -19,16 +26,36 @@ namespace DataLoader
 
             if (!Directory.Exists(rootFolder))
             {
-                Console.Error.WriteLine($"Specified Path \"{rootFolder}\"does not exist!");
+                Logger.Error($"Specified Path \"{rootFolder}\"does not exist!");
                 return;
             }
 
+            UpdateDatabase(rootFolder);
+            Logger.Info("End of Program");
+        }
+
+        private static void UpdateDatabase(string rootFolder)
+        {
+            LogSnapshot("Database state before update");
+
             IEnumerable<FileNode> allNodes = FileParser.LoadNodes(DirectoryCrawler.GetAllXmlsInFolder(rootFolder));
-            foreach (FileNode fn in allNodes)
+            Synchronizer syncer = new Synchronizer(allNodes);
+            syncer.Synchronize();
+            syncer.Dispose();
+
+            LogSnapshot("Database state after update");
+        }
+
+        private static void LogSnapshot(string header)
+        {
+            Logger.Info(header);
+            using (GraphContext context = new GraphContext())
             {
-                Console.Out.WriteLine(fn);
+                foreach (Node node in context.Nodes)
+                {
+                    Logger.Info(node);
+                }
             }
-            Console.ReadKey();
         }
 
         private static void PrintHelp()
