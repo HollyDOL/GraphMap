@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="WebServices.Service.GraphMapService" CodeBehind="GraphMapService.svc.cs" %>
