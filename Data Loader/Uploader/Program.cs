@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Database;
-using Database.DAO;
+using DataLoader.DataProcessing;
 
-namespace Uploader
+namespace DataLoader
 {
     class Program
     {
@@ -25,13 +22,11 @@ namespace Uploader
                 Console.Error.WriteLine($"Specified Path \"{rootFolder}\"does not exist!");
                 return;
             }
-            using (GraphContext context = new GraphContext())
+
+            IEnumerable<FileNode> allNodes = FileParser.LoadNodes(DirectoryCrawler.GetAllXmlsInFolder(rootFolder));
+            foreach (FileNode fn in allNodes)
             {
-                foreach (Node n in context.Nodes)
-                {
-                    Console.Out.WriteLine(n.Label);
-                }
-                Console.Out.WriteLine("a to je vsechno");
+                Console.Out.WriteLine(fn);
             }
             Console.ReadKey();
         }
